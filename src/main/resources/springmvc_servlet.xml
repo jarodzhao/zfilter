@@ -14,7 +14,7 @@
 	<!-- 使用注解方式完成映射 -->
 	
 	<!-- 让扫描spring扫描这个包下所有的类，让标注spring注解的类生效 -->
-	<context:component-scan base-package="test.controller" />
+	<context:component-scan base-package="mvc.controller" />
 	
 	<!-- 开启注解 -->
 	<mvc:annotation-driven />
