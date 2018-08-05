@@ -1,4 +1,4 @@
-package test.controller;
+package mvc.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class MyController
+public class MvcController
 {
 	@ResponseBody
 	@RequestMapping("/hi")
