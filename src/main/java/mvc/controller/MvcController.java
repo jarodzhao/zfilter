@@ -13,18 +13,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import thread.FindMaxTask;
+import thread.FindMaxTask2;
 
 import static util.DigitUtil.*;
 
 @Controller
 public class MvcController
 {
+	@ResponseBody
+	@RequestMapping("/callable2")
+	public String str0() throws InterruptedException, ExecutionException
+	{
+		int ref[] = createDigit(100000000);
+
+		ExecutorService es = Executors.newCachedThreadPool();
+
+		Future<Integer> future1 = es.submit(new FindMaxTask2(ref, 0, ref.length / 2));
+		Future<Integer> future2 = es.submit(new FindMaxTask2(ref, ref.length / 2, ref.length));
+
+		return future1.get() + " | " + future2.get();
+	}
+
 	/**
 	 * callable 方式线程的调用
 	 * 
 	 * @return
-	 * @throws ExecutionException 
-	 * @throws InterruptedException 
+	 * @throws ExecutionException
+	 * @throws InterruptedException
 	 */
 	@ResponseBody
 	@RequestMapping("/callable")
@@ -46,24 +61,23 @@ public class MvcController
 
 		FindMaxTask task1 = new FindMaxTask(ref1);
 		FindMaxTask task2 = new FindMaxTask(ref2);
-		
+
 		// 线程管理器，创建两个线程（自动复用线程）
 		ExecutorService es = Executors.newFixedThreadPool(2);
-		
+
 		/**
-		 * FixedThreadPool: 预分配线程池
-		 * CachedThreadPool: 缓存线程池（优选）
-		 * SingleThreadPool: 单任务（队列）线程
+		 * FixedThreadPool: 预分配线程池 CachedThreadPool: 缓存线程池（优选） SingleThreadPool:
+		 * 单任务（队列）线程
 		 */
-		
-		
+
 		// callable 线程任务会阻塞， runnable 不会
-		Future<Integer> future1 = es.submit(task1);		//get() 方法阻塞，直到出现结果, 50ms 约 1 亿个数字
-		Future<Integer> future2 = es.submit(task2);		//get() 方法阻塞，直到出现结果, 50ms 约 1 亿个数字
-		
+		Future<Integer> future1 = es.submit(task1); // 50ms 约 1 亿个数字
+		Future<Integer> future2 = es.submit(task2);
+
 		// 检查线程是否完成
 		future1.isDone();
-		
+
+		// get() 方法阻塞，直到出现结果后继续
 		return future1.get() + " / " + future2.get();
 	}
 
