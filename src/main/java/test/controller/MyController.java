@@ -1,5 +1,7 @@
 package test.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import org.springframework.stereotype.Controller;
@@ -14,7 +16,8 @@ public class MyController
 	public String hi()
 	{
 		Random random = new Random();
-		String ref = "hi, " + random.nextFloat();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String ref = "hi, " + random.nextFloat() + " at " + sdf.format(new Date());
 		System.out.println(ref);
 		return ref;
 	}
